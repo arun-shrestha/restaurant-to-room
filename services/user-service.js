@@ -5,7 +5,7 @@ exports.addUser = function(user, next) {
     firstName: user.firstName,
     lastName: user.lastName,
     roomNumber: user.roomNumber,
-    email: user.email.toLowerCase,
+    email: user.email.toLowerCase(),
     password: user.password
   });
   
@@ -17,8 +17,8 @@ exports.addUser = function(user, next) {
   });
 };
 
-exports.findUser = function (email, next) {
-  User.findOne({email:email.toLowerCase()}, function (err, user) {
-    next(err, user);
+exports.findUser = function(email, next) {
+  User.findOne({email: email.toLowerCase()}, function(err, user) {
+    next(err, user);    
   });
 };

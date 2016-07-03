@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var userService = require('../services/user-service');
 
 /* GET users listing. */
@@ -17,6 +18,7 @@ router.get('/create', function(req, res, next) {
 router.post('/create', function(req, res, next) {
   userService.addUser(req.body, function(err) {
     if (err) {
+      console.log(err);
       var vm = {
         title: 'Create an account',
         input: req.body,
@@ -25,8 +27,19 @@ router.post('/create', function(req, res, next) {
       delete vm.input.password;
       return res.render('users/create', vm);
     }
-    res.redirect('/orders');
+    req.login(req.body, function(err) {
+      res.redirect('/orders');
+    });
   });
+});
+
+router.post('/login', passport.authenticate('local'), function(req, res, next) {
+  res.redirect('/orders');
+});
+
+router.get('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect('/');
 });
 
 module.exports = router;
