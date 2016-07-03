@@ -33,9 +33,12 @@ router.post('/create', function(req, res, next) {
   });
 });
 
-router.post('/login', passport.authenticate('local'), function(req, res, next) {
-  res.redirect('/orders');
-});
+router.post('/login', 
+passport.authenticate('local', {
+  failureRedirect: '/',
+  successRedirect: '/orders',
+  failureFlash: 'Invalid credentials'
+}));
 
 router.get('/logout', function(req, res, next) {
   req.logout();
