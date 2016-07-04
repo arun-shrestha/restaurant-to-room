@@ -1,6 +1,7 @@
 module.exports = function() {
   var passport = require('passport');
   var passportLocal = require('passport-local');
+  var bcrypt = require('bcryptjs');
   var userService = require('../services/user-service');
   
   passport.use(new passportLocal.Strategy({usernameField: 'email'}, function(email, password, next) {
@@ -8,7 +9,7 @@ module.exports = function() {
       if (err) {
         return next(err);
       }
-      if (!user || user.password !== password) {
+      if (!user) {
         return next(null, null);
       }
       next(null, user);
