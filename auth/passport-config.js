@@ -12,7 +12,15 @@ module.exports = function() {
       if (!user) {
         return next(null, null);
       }
-      next(null, user);
+      bcrypt.compare(password, user.password, function(err, same) {
+        if (err) {
+          return next(err);
+        }
+        if (!same) {
+          return (null, null);
+        }
+        next(null, user);
+      });
     });
   }));
   
